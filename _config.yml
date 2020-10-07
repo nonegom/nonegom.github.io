@@ -1,4 +1,4 @@
-# Welcome to Jekyll!
+z# Welcome to Jekyll!
 #
 # This config file is meant for settings that affect your entire site, values
 # which you are expected to set up once and rarely need to edit after that.
@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "neon" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -94,9 +94,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "ChanGuk Moon"
+  name             : "NoneGom"
   avatar           : "/assets/images/profile.jpg"
-  bio              : "TIL을 통한 성장을 도모하는 26살 도전자"
+  bio              : "TIL을 통한 성장을 도모하는 학생"
   location         : "South Korea"
   email            :
   links:
