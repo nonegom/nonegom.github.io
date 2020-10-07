@@ -31,9 +31,9 @@ masthead_title           : # overrides the website title displayed in the masthe
 words_per_minute         : 200
 
 comments:
-  provider               : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
-  disqus:
-    shortname            : # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
+  provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
+  disqus: 
+    shortname            : "nonegom-github-io" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
     server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
   facebook:
@@ -96,7 +96,7 @@ analytics:
 author:
   name             : "NoneGom"
   avatar           : "/assets/images/profile.jpg"
-  bio              : "TIL을 통한 성장을 도모하는 학생"
+  bio              : "조금씩 천천히, 하지만 꾸준히"
   location         : "South Korea"
   email            :
   links:
@@ -269,6 +269,7 @@ compress_html:
 # Defaults
 defaults:
 # Defaults
+
 defaults:
   # _posts
   - scope:
@@ -278,7 +279,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: # 블로그 댓글 기능 true
+      comments:  true
       share: true
       related: true
 
