@@ -1,10 +1,11 @@
+---
 title: "github.io 블로그 시작"
 excerpt: github Blog 서비스인 github.io를 통해 TIL 시작"
 
 categories:
-	- Blog
+ - Blog
 tags:
-	- Blog
+ - Blog
 
 last_modified_at: {{ page.last_modified_at }}
 ---
