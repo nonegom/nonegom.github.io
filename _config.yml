@@ -20,11 +20,11 @@ title                    : "논곰의 TIL 잔디심기"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "NoneGom"
-description              : "GIT은 처음인데... TIL도 처음입니다...아차차 아차차"
+description              : "어제도 오늘도 내일도 잔디심는 중"
 url                      : "https://nonegom.github.io/"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : "/assets/images/panda.jpg"
+teaser                   : "/assets/images/panda2.jpg"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
@@ -76,7 +76,7 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 : "/assets/images/panda.jpg"
+og_image                 : "/assets/images/green.jpg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
