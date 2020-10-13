@@ -1,0 +1,94 @@
+---
+title:  "[문제해결] jekyll에 MathJax 설치"
+excerpt: "Jekyll에 MathJax 적용시 디스플레이(display)블록 미적용 에러 해결"
+
+categories:
+  - 문제해결
+tags:
+  - LaTeX
+  - MathJax
+  - Jekyll
+toc: true
+toc_sticky: true
+toc_label: 페이지 목차  
+use_math: true
+---
+## reference
+
+- [Jekyll Github 블로그에 MathJax로 수학식 표시하기](https://mkkim85.github.io/blog-apply-mathjax-to-jekyll-and-github-pages/)
+- [Github로 블로그 만들기 + LaTeX 적용하기](https://helloworldpark.github.io/jekyll/update/2016/12/18/Github-and-Latex.html)
+- [http://benlansdell.github.io/computing/mathjax/](http://benlansdell.github.io/computing/mathjax/)
+
+## 0. 개요
+ 블로그 정리에 있어 LaTex문법을 사용해야 할 것 같아서 찾던 중 MathJax라는 것에 대해 알게 되었다. [Jekyll Github 블로그에 MathJax로 수학식 표시하기](https://mkkim85.github.io/blog-apply-mathjax-to-jekyll-and-github-pages/)에서 정보를 얻어 설치를 했으나, **`inline($ $)태그`**는 적용이 되나 **`display($$ $$)`태그는 적용이 안되는 문제를 발견**
+
+## 1. 문제 해결 과정
+
+- 검색을 해보던 중 비슷한 사항에 대해 발견함. 일부 블로그에서는 나와 다르게 오히려 **`display($$ $$)`**만 적용이 되고, **`inline($ $)'태그`**가 적용이 안되는 경우를 물어보고 해결한 댓글을 확인.
+- 관련 블로그에서 사용한 방법과 내가 사용한 방법의 차이점에 대해서 확인하고 코드를 여러번 돌려본 결과 차이점을 확인할 수 있었음 
+
+1. 우선 내가 참고해서 Mathjax를 설치한 블로그(편의상 A로 칭함)에서는 아래와 같은 순서로 진행했다.
+  >_config.yml 수정 - _includes/mathjax_support.html 생성 - _layouts/default.html 수정
+  (위 방법으로 사용시 **display태그**가 사용 안됨)
+
+2. 또 다른 블로그(편의상 B로 칭함)에서는 `_layouts/post.html파일에서 스크립트를 수정`하는 방식으로 진행했다. (위 방법으로 사용한 사용자들이 **inline태그** 사용이 안됨)
+
+3. 여기서 공통적으로 **자바스크립트 태그**부분에 차이점을 발견.
+
+4. 기존에 내 코드에서 B의 코드 부분만 수정함으로써 문제를 해결했다. 
+
+## 2. 문제해결 방법
+```
+# 예제 문법
+- inline 태그: $ P(y = k | x) $을 모두 계산  
+- display 태그: 
+$$ P_1 = P(y=1|x)...P_K = P(y=K|x) $$
+```
+
+- 발견된 오류 화면: inline태그는 실행되나, display태그는 실행되지 않음.
+
+![](/assets/images/error_1.jpg){: .align-center}
+
+
+- 수정 사항: `_includes` 디렉토리에 `mathjax_support.html` 파일 수정
+```html
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    // displayMath: [ ['$$', '$$'] ], -> 이 부분을 수정
+      displayMath: [ ['\\(','\\)'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+```
+
+
+- 해결 후 화면: inline태그와 display 태그가 다 실현됨을 확인할 수 있음.
+
+inline태그:
+$P(y = k | x)$을 모두 계산
+
+display태그: 
+$$ P_1 = P(y=1|x)...P_K = P(y=K|x) $$
+
+## 3. 코멘트
+- 블로그 포스팅을 하다가 문제가 생겨서 거의 1시간을 날린 것 같은데, 문제를 해결했다는 데에 굉장히 뿌듯했다.
+- 앞으로 문제가 생길 때마다 포스팅을 하나씩 해야겠다.  
+
+> 혹시 추가적인 수정 사항이나 궁금한 사항이 있으시면 댓글 부탁드립니다.
