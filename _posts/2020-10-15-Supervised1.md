@@ -1,6 +1,6 @@
 ---
 title:  "[머신러닝] 지도학습 - 2.1. 로지스틱 회귀분석"
-excerpt: ""
+excerpt: "Logistic 회귀분석에 대한 이론과 간단한 코드 정리"
 
 categories:
   - MachinLearning
@@ -145,7 +145,7 @@ plt.plot(xx, mu, lw=3)
 ```
 ### 기준값(threshold) 구하기
 ![](/assets/images/Supervised1_1.jpg)
-> 리포트 결과를 보면 원래의 판별함수의 수식은 다음과 같다.
+ 리포트 결과를 보면 원래의 판별함수의 수식은 다음과 같다.
 $$\mu(x) = \sigma(4.2382x + 0.2515)$$
 
 따라서 $4.2382x +0.2515 = 0.5$이 되는 값 $x$는 $(0.5 -0.2515)/4.2382$로 구해야 한다. 하지만`const`상수항의 값은 유의확률을 감안하면 0과 마찬가지이므로 $\mu(x)$의 값은 다음과 같다고 할 수 있다.
@@ -269,13 +269,12 @@ print(result_wrole2.summary())
 
 ## 그래프를 통한 예측 그래프 확인 
 
-### education열에 해당하는 데이터 그래프에 찍기
-sns.scatterplot(x="education", y="ratio", data=df_wrole)
+sns.scatterplot(x="education", y="ratio", data=df_wrole) # education열에 해당하는 데이터 (점)
 xx = np.linspace(0, 20, 100)
 df_wrole_p = pd.DataFrame({"education": xx})
-
-### education열로 예측한 모형
-plt.plot(xx, result_wrole2.predict(df_wrole_p), "r-", lw=4, label="예측")
+plt.plot(xx, result_wrole2.predict(df_wrole_p),
+ "r-", lw=4, label="예측") # education열로 예측한 모형 (곡선)
 plt.legend()
 plt.show()
 ```
+![](/assets/images/Supervised1_2.jpg){: .align-center}
