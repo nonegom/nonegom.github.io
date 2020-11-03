@@ -1,9 +1,9 @@
 ---
-title:  "[머신러닝] 그래프 모형 - 4. 가우시안 혼합모형과 EM방법"
-excerpt: "그래프 모형 중 네트워크 추론에서 변수제거 방법과 신뢰전파 방법"
+title:  "[머신러닝] 비지도학습 - 6. 가우시안 혼합모형과 EM방법"
+excerpt: "가우시안 혼합모형과 EM방법을 통한 확률분포 추정방법"
 
 categories:
-  - GraphModel
+  - UnSupervisedLearning
 tags:
   - UnSupervisedLearning
   - 11월
