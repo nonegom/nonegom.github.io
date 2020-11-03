@@ -3,7 +3,7 @@ title:  "[머신러닝] 비지도학습 - 6. 가우시안 혼합모형과 EM방�
 excerpt: "가우시안 혼합모형과 EM방법을 통한 확률분포 추정방법"
 
 categories:
-  - UnSupervisedLearning
+  - ML_Unsrpervised
 tags:
   - UnSupervisedLearning
   - 11월
