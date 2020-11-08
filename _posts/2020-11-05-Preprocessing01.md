@@ -3,7 +3,7 @@ title:  "[머신러닝] 데이터 전처리 (자연어)  - 1. NLTK 자연어 처
 excerpt: "NLTK 패키지를 사용한 자연어 전처리 Text 클래스를 사용한 FreqDist, WordCloud 출력"
 
 categories:
-  - ML_Unsrpervised
+  - ML_PreProcessing
 tags:
   - UnSupervisedLearning
   - 11월
