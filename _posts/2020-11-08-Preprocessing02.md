@@ -75,14 +75,6 @@ mecab = Mecab()
 - `morphs` : 형태소 추출
 - `pos` : 품사 부착
 
-### 1) 명사 추출
-문자열에서 명사만 추출하려면 `noun`명령을 사용한다.
-
-```py
-hannanum.nouns(c[:40])
-kkma.nouns(c[:40])
-okt.nouns(c[:40])
-```
 
 ### 1) 명사 추출
 문자열에서 명사만 추출하려면 `noun`명령을 사용한다.
@@ -165,7 +157,7 @@ kolaw.plot(30)
 plt.show()
 ```
 
-![](assets/images/Preprocessing2_1.png)
+![](/assets/images/Preprocessing2_1.png)
 
 ```py
 from wordcloud import WordCloud
@@ -180,7 +172,7 @@ plt.axis("off")
 plt.show()
 ```
 
-![](assets/images/Preprocessing2_2.png)
+![](/assets/images/Preprocessing2_2.png)
 
 ## 참고 (사용자 사전)
 **사용자 사전**을 추가할 수가 있다.
