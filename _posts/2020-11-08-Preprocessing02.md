@@ -1,6 +1,6 @@
 ---
 title:  "[머신러닝] 데이터 전처리 (자연어)  - 2. KoNLPy 한국어 처리 패키지 "
-excerpt: "NLTK 패키지를 사용한 자연어 전처리 Text 클래스를 사용한 FreqDist, WordCloud 출력"
+excerpt: "KoNLPy 패키지를 사용한 한국어 데이터 처리 - 한나눔, 꼬꼬마, 오픈 코리안 텍스트 "
 
 categories:
   - ML_PreProcessing
