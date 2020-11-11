@@ -5,7 +5,7 @@ excerpt: "Scikit-Learn의 문서 전처리 클래스 - CountVectorizer, TFidfVec
 categories:
   - ML_PreProcessing
 tags:
-  - UnSupervisedLearning
+  - PreProcessing
   - 11월
 toc: true
 toc_sticky: true

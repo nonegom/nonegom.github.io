@@ -5,7 +5,7 @@ excerpt: "KoNLPy 패키지를 사용한 한국어 데이터 처리 - 한나눔, 
 categories:
   - ML_PreProcessing
 tags:
-  - UnSupervisedLearning
+  - PreProcessing
   - 11월
 toc: true
 toc_sticky: true

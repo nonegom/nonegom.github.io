@@ -5,7 +5,7 @@ excerpt: "NLTK 패키지를 사용한 자연어 전처리 Text 클래스를 사�
 categories:
   - ML_PreProcessing
 tags:
-  - UnSupervisedLearning
+  - PreProcessing
   - 11월
 toc: true
 toc_sticky: true

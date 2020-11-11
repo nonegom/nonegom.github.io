@@ -6,7 +6,7 @@ excerpt: "문장의 단어 열이 실제로 현실에서 사용될 수 있는 �
 categories:
   - ML_PreProcessing
 tags:
-  - UnSupervisedLearning
+  - PreProcessing
   - 11월
 toc: true
 toc_sticky: true

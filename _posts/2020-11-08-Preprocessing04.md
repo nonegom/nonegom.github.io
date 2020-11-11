@@ -5,7 +5,7 @@ excerpt: "형태소 분석 없이 토큰화 기능을 제공하는 `soynlp`패�
 categories:
   - ML_PreProcessing
 tags:
-  - UnSupervisedLearning
+  - PreProcessing
   - 11월
 toc: true
 toc_sticky: true
