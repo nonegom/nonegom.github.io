@@ -1,12 +1,11 @@
 ---
-title:  "[머신러닝] 데이터 전처리 (이미지)  - 1. 이미지 처리 기초
-"
-excerpt: "이미지를 구성하는 기본 요소 및 이미지 처리 라이브러리 - 픽셀, 색공간, 이미지 형식 / Pillow, OpenCV, Scikit-Image "
+title:  "[머신러닝] 데이터 전처리 (이미지)  - 2. 이미지 필터링"
+excerpt: "이미지 필터링 - threshold, imagefilter, blur, Morphological Transformation 및 이미지 필터링 예제"
 
 categories:
   - ML_PreProcessing
 tags:
-  - UnSupervisedLearning
+  - PreProcessing
   - 11월
 toc: true
 toc_sticky: true
@@ -14,336 +13,411 @@ toc_label: 페이지 목차
 use_math: true
 ---
 
-> 아래 포스팅은 기존 수업의 복습 차원에서 올리는 포스팅입니다. 따라서 세부적인 수학적 정리가 생략된 부분이 있습니다. 따라서 좀 더 구체적인 정보나 원하시면 [데이터 사이언스 스쿨 사이트](https://datascienceschool.net/03%20machine%20learning/03.01.05%20%ED%99%95%EB%A5%A0%EB%A1%A0%EC%A0%81%20%EC%96%B8%EC%96%B4%20%EB%AA%A8%ED%98%95.html)를 참고 부탁드립니다. 특히 아래 코드를 이용한 시각화 그래프 코드와 모습을 보고 싶으시면 링크 확인부탁드립니다.  
+> 아래 포스팅은 기존 수업의 복습 차원에서 올리는 포스팅입니다. 따라서 세부적인 수학적 정리가 생략된 부분이 있습니다. 따라서 좀 더 구체적인 정보나 원하시면 [데이터 사이언스 스쿨 사이트](https://datascienceschool.net/03%20machine%20learning/03.02.02%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%ED%95%84%ED%84%B0%EB%A7%81.html)를 참고 부탁드립니다. 특히 아래 코드를 이용한 시각화 그래프 코드와 모습을 보고 싶으시면 링크 확인부탁드립니다.  
 
-# 이미지 처리 기초
 
-이미지 데이터를 표현하는 방식과 이미지 데이터를 처리하기 위한 파이썬 패키지 `Pillow`, `Scikit-Image`, `OpenCV`에 대해 설명한다.
+## 0.이미지 필터링
 
-## 1. 픽셀
-이미지 데이터는 **픽셀(pixel)**이라고 하는 작은 이미지를 직사각형 형태로 모은 것이다. 각 픽셀은 단색의 직사각형이고, 전체 이미지의 크기를 표현할 때는 (세로픽셀수 x 가로픽셀수) 형식으로 표현한다. 
+여러 수식을 이용해 이미지를 이루고 있는 픽셀 행렬을 다른 값으로 바꾸어 **이미지를 변형하는 것**을 말한다.
 
-이미지 데이터를 저장할 때는 픽셀의 색을 표현하는 **스칼라 값**이나 **벡터**를 2차원 배열로 표현한다. 파이썬에서는 `Numpy`의 `ndarray`클래스 배열로 표현한다.
+## 1. 임계처리 (Thresholding)
+이미지 행렬에서 하나의 픽셀값을 **사용자가 지정한 기준값(threshold)을 사용하여 이진화(binarization)**하는 가장 단순한 필터다. OpenCV에서는 `threshold`라는 함수로 구현되어 있다. 
 
-## 2. 색공간
-픽셀의 색을 숫자로 표현하는 방식을 **색공간(color space)**라고 한다. 대표적인 색공간으로는 **그레이스케일**(gray scale), **RGB**(Red-Green-Blue), **HSV**(Hue-saturation-Value)방식이 있다. 
+### threshold 함수
+- `threshold(src, thresh, maxval, type)`
+    - `src` : 그레이 스케일 이미지
+    - `thresh` : 기준값
+    - `maxval` : 기준값을 넘었을 때 적용할 최대값
+    - `type` : 임계처리 유형
+        - `THRESH_BINARY` : 기준값을 넘으면 최대값 아니면 0
+        - `THRESH_BINARY_INV` : 기준값을 넘으면 0 아니면 최대값
+        - `THRESH_TRUNC` : 기준값을 넘으면 기준값 아니면 최대값
+        - `THRESH_TOZERO` : 기준값을 넘으면 원래값 아니면 0
+        - `THRESH_TOZERO_INV` : 기준값을 넘으면 0 아니면 원래값
 
-### 1) 그레이스케일
-그레이 스케일에서는 모든 색이 흑백이고, 각 픽셀은 명도를 나타내는 숫자(스칼라)로 표현된다. **0은 검은색**을 나타내고 숫자가 **커질수록 명도가 증가**하며 하얀색이 된다. 숫자는 보통 0~ 255의 8비트 부호없는 정수로 저장된다.
-
-SciPy 패키지의 `misc` 서브 패키지의 `face` 명령은 이미지 처리용 샘플 이미지를 제공한다. 인수로 `(gray=True)`를 입력하면 그레이스케일 이미지를 반환한다. 이미지의 크기는 배열의 `shape` 속성으로 볼 수 있다. 
-
-이 이미지 데이터는 (768, 1024) 크기의 uint8 자료형 2차원 배열이다. 좌측 상단의 15x15개 픽셀의 데이터만 보면 아래와 같다.
+> 기본적으로 흑백 이미지만 처리가 가능하다.
 
 ```py
-# 1. 이미지 로드
-import scipy as sp
+import cv2
+from skimage.data import coins
+img = coins()
+maxval = 255
+thresh = maxval / 2  # 최대값의 반을 thresh의 값으로 받음
 
-img_gray = sp.misc.face(gray=True)
-img_gray.shape
-# > (768, 1024)
+# 원본나오는 것은 '_(언더바)' 변수 할당 안받는 것으로 설정
+_, thresh1 = cv2.threshold(img, thresh, maxval, cv2.THRESH_BINARY) # 배경 까맣게
+_, thresh2 = cv2.threshold(img, thresh, maxval, cv2.THRESH_BINARY_INV) # 객체를 까맣게
+_, thresh3 = cv2.threshold(img, thresh, maxval, cv2.THRESH_TRUNC) 
+_, thresh4 = cv2.threshold(img, thresh, maxval, cv2.THRESH_TOZERO) 
+_, thresh5 = cv2.threshold(img, thresh, maxval, cv2.THRESH_TOZERO_INV)
 
-# 2. 히트맵 그리기
-import matplotlib.pylab as plt
-import seaborn as sns
+titles = ['원본이미지', 'BINARY', 'BINARY_INV', 'TRUNC', 'TOZERO', 'TOZERO_INV']
+images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
+plt.figure(figsize=(9, 5))
 
-sns.heatmap(img_gray[:15, :15], annot=True, fmt="d", cmap=plt.cm.bone)
-plt.axis("off")
+for i in range(6):
+    plt.subplot(2, 3, i+1), plt.imshow(images[i], 'gray')
+    plt.title(titles[i], fontdict={'fontsize': 10})
+    plt.axis('off')
+
+plt.tight_layout(pad=0.7)
 plt.show()
 ```
 
-![](/assets/images/Preprocessing6_1.png)
+![](/assets/images/Preprocessing7_1.png)
 
-### 2) RGB
-RGB색공간은 Red, Green, Blue 3가지 색의 명도를 뜻하는 숫자 3개가 합쳐진 벡터로 표현된다. 8비트 부호없는 정수를 사용하는 경우 (255, 0, 0)은 빨간색, (0, 255, 0)은 녹색, (0, 0, 255), 파란색이다.
+### 사용 예시
+- 경계선을 추출할 때, 하얀색 아니면 까만색으로 만들어서 처리하기 편하게 만든다.
 
-RGB는 (세로 픽셀수 x 가로픽셀수 x 색체널)의 3차원 배열의 형태로 저장한다. 세번째 축을 **색채널**이라고 부른다. 
+
+## 2. 적응임계처리
+
+이미지 전체에 하나의 기준값을 적용한다. 일정한 영역 내의 **이웃한 픽셀들의 값들을 이용**해 해당 영역에 적용할 기준값을 자체적으로 계산한다. OpenCV에서는 `adaptiveThreshold` 함수로 구현되어 있다.
+
+### adaptiveThreshold 함수
+- `adaptiveThreshold(src, maxValue, adaptiveMethod, thresholdType, blockSize, C)`
+    - `src` : 그레이스케일 이미지
+    - `maxValue` – 기준값을 넘었을 때 적용할 값
+    - `adaptiveMethod` : 영역 내에서 기준값을 계산하는 방법.
+        - `ADAPTIVE_THRESH_MEAN_C`: 영역 내의 **평균값에서 C를 뺀 값**을 기준값으로 사용
+        - `ADAPTIVE_THRESH_GAUSSIAN_C`: 영역에 추후 설명할 **가우시안 블러**를 적용한 후 C를 뺀 값을 기준값으로 사용
+
+    - `thresholdType` : 임계처리 유형
+        - `THRESH_BINARY`
+        - `THRESH_BINARY_INV`
+
+    - `blockSize` : 임계처리를 적용할 영역의 크기
+    - `C` : 평균이나 가중평균에서 차감할 값
 
 ```py
-# 1. 샘플 이미지 로드
-from sklearn.datasets import load_sample_images
+from skimage.data import page
 
-dataset = load_sample_images()   
-img_rgb = dataset.images[1]
-img_rgb.shape
+img = page()
 
-# 2. RGB별 사진 출력
-plt.figure(figsize=(10, 2))
+maxval = 255
+thresh = 126
+ret, th1 = cv2.threshold(img, thresh, maxval, cv2.THRESH_BINARY)
 
-plt.subplot(141)
-plt.imshow(img_rgb[50:200, 50:200, :])
-plt.axis("off")
-plt.title("RGB 이미지")
+k = 15
+C = 20
 
-plt.subplot(142)
-plt.imshow(img_rgb[50:200, 50:200, 0], cmap=plt.cm.bone)
-plt.axis("off")
-plt.title("R 채널")
+th2 = cv2.adaptiveThreshold(
+    img, maxval, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, k, C)
+th3 = cv2.adaptiveThreshold(
+    img, maxval, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, k, C)
 
-plt.subplot(143)
-plt.imshow(img_rgb[50:200, 50:200, 1], cmap=plt.cm.bone)
-plt.axis("off")
-plt.title("G 채널")
+images = [img, th1, th2, th3]
+titles = ['원본이미지', '임계처리', '평균 적응임계처리', '가우시안블러 적응임계처리']
 
-plt.subplot(144)
-plt.imshow(img_rgb[50:200, 50:200, 2], cmap=plt.cm.bone)
-plt.axis("off")
-plt.title("B 채널")
+plt.figure(figsize=(8, 5))
+for i in range(4):
+    plt.subplot(2, 2, i+1)
+    plt.imshow(images[i], 'gray')
+    plt.title(titles[i])
+    plt.axis('off')
 
+plt.tight_layout()
+plt.show()
+```
+![](/assets/images/Preprocessing7_2.png)
+
+## 3. 이미지 필터링
+ **필터, 커널, 윈도우**라고 하는 **정방행렬을 정의**한다. 이 커널을 이동시키면서, 같은 이미지 영역과 곱하여 그 결과 값을 이미지의 해당 위치의 값으로 하는 새로운 이미지로 만드는 연산이다. 기호 $\otimes$로 표시한다.
+- 커널의 값에 어떤 것을 주느냐에 따라 이미지가 뭉개질 수도 있고, 더 밝아질 수도 있다.
+
+### filter2D 함수
+openCV에서는 `filter2D` 함수를 사용한다
+
+- `filter2D(src, ddepth, kernel[, dst[, anchor[, delta[, borderType]]]])`
+    - `src`: 이미지
+    - `ddepth`: 이미지 깊이(자료형 크기). -1이면 입력과 동일
+    - `kernel`: 커널 행렬 사이즈
+
+```py
+import cv2
+from skimage.data import astronaut
+
+img = astronaut()
+img = cv2.resize(img, dsize=(150, 150))
+
+plt.figure(figsize=(8,3))
+
+for i, k in enumerate([2, 6, 11]):
+# 커널 생성 및 이미지 필터링
+    kernel = np.ones((k, k)) / k**2 
+    filtering = cv2.filter2D(img, -1, kernel)
+# 이미지 설정
+    plt.subplot(1, 3, i+1)
+    plt.imshow(filtering)
+    plt.title("커널 사이즈 {}".format(k))
+    plt.axis("off")
+    
 plt.show()
 ```
 
-![](/assets/images/Preprocessing6_2.png)
+## 4. 블러 (Blur)
+이미지 필터링을 사용해서 이미지를 흐리게 만드는 것을 말한다. 노이즈를 제거하거나 경계선을 흐리게 하기 위해 쓴다. 블러의 종류는 아래와 같이 있다.
+- 평균 블러
 
-그림을 보면 붉은 기와 부분에서는 R채널의 값이 크고 하늘은 B채널의 값이 큰 것을 확인할 수 있다. (하얀색에 가까운 색이 나타날 수록 값이 크다.)
+- 중앙값 블러
 
+- 가우시안 블러
 
-### 3) HSV
-
-HSV(Hue, Saturation, Value) 색공간은 **색상, 채도, 명도** 세가지 값으로 표현된다. 값의 크기는 %로 나타나며, 색상의 스펙트럼의 경우 0~360도의 값을 가진다.
-
-- **색상(Hue)**: 색상값 H는 가시광선 스펙트럼을 주파수 별로 고리모양으로 배치했을 때의 각도이다. 0°~360°의 범위를 갖고 360°와 0°는 빨강을 가리킨다.
-
-- **채도(Saturation)**: 채도값 S는 특정한 색상의 진함의 정도를 나타낸다. 가장 진한 상태를 100%이고 0%는 같은 명도의 무채색이다.
-
-- **명도(Value)**: 명도값 V는 밝은 정도를 나타낸다. 순수한 흰색, 빨간색은 100%이고 검은색은 0%이다.
+- 양방향 블러
 
 
-`matplotlib` 패키지의 `rgb_to_hsv`, `hsv_to_rgb` 명령을 사용하면 RGB 색공간 표현과 HSV 색공간 표현을 **상호변환**할 수 있다.
-
-HSV 색공간으로 표현된 파일은 `imshow` 명령으로 바로 볼 수 없다. 이외에도 RGB, HSV 색공간에 **투명도(transparency)를 표현**하는 **A(Alpha) 채널**이 추가된 RGBA, HSVA 등의 색공간도 있다.
+### 1) 평균블러
+- 균일한 값을 가지는 커널을 이용한 이미지 필터링. 따라서 커널 영역 내의 평균값으로 픽셀을 대체한다.
+- `blur(src, ksize)`
+    - `src`: 원본 이미지
+    - `ksize`: 커널 크기 (튜플 값으로)
 
 ```py
-from matplotlib.colors import hsv_to_rgb
-
-V, H = np.mgrid[0:1:100j, 0:1:360j]
-S = np.ones_like(V)
-
-# 채도가 100일 때
-HSV_S100 = np.dstack((H, S * 1.0, V))
-RGB_S100 = hsv_to_rgb(HSV_S100)
-
-# 채도가 20일 때
-HSV_S20 = np.dstack((H, S * 0.2, V))
-RGB_S20 = hsv_to_rgb(HSV_S20)
-
-HSV_S20.shape
-
-####### 시각화 코드 생략 #######
-```
-
-![](/assets/images/Preprocessing6_3.png)
-
-
-
-## 3. 이미지 파일 형식
-
-`.bmp` 확장자를 가지는 **비트맵(bitmap) 파일**은 지금까지 설명한 다차원 배열정보를 그대로 담고있지만 비트맵 파일은 파일 용량이 크기 때문에 압축을 통해 용량을 줄인 `JPG`, `GIF`, `PNG` 등의 압축 파일 형식도 많이 사용한다.
-
-- JPEG: 웹상 및 멀티미디어 환경에서 가장 널리 사용되고 있는 포맷. RGB 이미지의 모든 컬러 정보를 다 유지한다.
-- GIF: 하나의 파일에 여러 비트맵을 저장해서 다중 프레임 애니메이션 구현 가능, 투명 이미지 지원 
-- PNG: GIF 포맷을 대체하기 위해 개발된 파일 포맷, 비손실 압축방식으로 원본에 손상없이 파일의 크기를 줄여준다. 문자 혹은 날카로운 경계가 있는 이미지의 경우 `PNG`가 효과적이다.
-
-# Python 이미지 처리 패키지
-
-## 1. Pillow를 이용한 이미지 처리
-`Pillow`는 이전에 사용되던 PIL(Python Imaging Library)패키지를 대체하기 위한 것이다. JPEG, BPM, GIF, PNG, PPM, TIFF 등의 **다양한 포맷을 지원**하고 **초보자**가 다루기 쉽다는 장점이 있다
-
-### 이미지 읽고 쓰기
-
-1. 인터넷에서 실습을 위한 이미지 파일을 내려받는다.
-
-2. `Image` 클래스를 사용하면 여러가지 다양한 포맷의 이미지를 읽고 변환하여 저장할 수 있다. `open` 메서드는 이미지 파일을 열 수 있다.
-
-3. 주피터 노트북에서는 Image 클래스 객체를 바로 볼 수 있다. (바로 이미지 변수 출력하면 됨)
-
-```py
-## 1. 파일 다운로드
-import urllib.request
-urllib.request.urlretrieve("https://www.python.org/static/community_logos/python-logo-master-v3-TM.png", filename="logo.png")
-
-## 2. 이미지 열기
-from PIL import Image
-img_logo = Image.open("./logo.png")
-img_logo.size()
-# > (601, 203)
-
-## 3. 이미지 출력
-img_logo
-```
-
-![](/assets/images/Preprocessing6_4.png)
-
-4. 파일로 저장할 때는 `save`메서드를 사용한다. 확장자를 지정하고 싶가면 해당 이미지 형식으로 자동 변환되어 저장된다.
-
-5. 이미지 데이터 처리를 위해 `Image` 클래스 객체를 `NumPy` 배열로 변환할 때는 `np.array` 함수를 사용한다. `NumPy` 배열이 되면 `matplotlib`의 `imshow` 명령으로 볼 수 있다.
-
-6. 반대로 `NumPy` 배열을 `Image` 객체로 바꿀 때는 `fromarray` 클래스 메서드를 사용한다.
-
-```py
-## 4. 이미지 저장  
-img_logo.save("./logo.bmp")
-img_logo_bmp = Image.open("./logo.bmp")
-
-## 5. Image 객체에서 배열로 (np.array)
-img_logo_array = np.array(img_logo_bmp)
-
-plt.imshow(img_logo_array)
-plt.axis("off")
-plt.show()
-
-## 6. Numpy 배열에서 Image객체로
-Image.fromarray(img_logo_array)
-
-```
-
-### 이미지 크기 변환
-이미지의 크기를 확대 또는 축소하려면 `resize`메서드를 사용한다. 인수로는 새로운 사이즈의 **튜플을 입력**한다.
-```py
-img_logo2 = img_logo.resize((300,100))
-img_logo2
-```
-
-![](/assets/images/Preprocessing6_5.png)
-
-썸네일 이미지를 만들고 싶다면 `Image` 객체의 `thumbnail`메서드를 사용한다. 단, `resize`메서드와는 다르게 원래 **객체 자체를 바꾸는** 인플레이스(in-place) 메서드이므로 주의해서 사용한다. 
-
-```py
-img_logo_thumbnail = img_logo.copy() # 원본 데이터 보호를 위해 깊은 복사
-img_logo_thumbnail.thumbnail((150, 50))
-img_logo_thumbnail
-```
-
-![](/assets/images/Preprocessing6_6.png)
-
-### 이미지 회전
-
-이미지를 회전하기 위해서는 `rotate` 메서드를 호출한다. 인수로는 (도(degree) 단위)**각도를 입력**한다. 입력 각도만큼 **반시계 방향으로 회전**한다.
-
-```py
-img_logo_rotated = img_logo_png.rotate(45)
-img_logo_rotated
-```
-
-### 이미지 잘라내기
-`crop` 메서드를 사용하면 이미지에서 우리가 관심이 있는 **특정 부분(ROI: region of interest)만 추출** 할 수 있다. 인수로 ROI의 **좌-상의 좌표**, **우-하의 좌표**를 받는다. 아래의 코드는 파이썬 로고이미지에서 파이썬의 마크만 잘라낸 것이다.
-
-```py
-img_logo_cropped = img_logo_png.crop((10, 10, 200, 200))
-img_logo_cropped
-```
-
-![](/assets/images/Preprocessing6_8.png)
-
-## 2. Scikit-Image
-
-### 샘플 이미지
-`Scikit-Image`는 `data`라는 모듈을 통해 **샘플 이미지 데이터를 제공**한다. 이미지는 **NumPy 배열 자료형**으로 사용한다.
-
-```py
-import skimage.data
-
-img_astro = skimage.data.astronaut()
-img_astro.shape
-# > (512, 512, 3)
-```
-
-### 이미지 읽고 쓰기
-`Scikit-Image` 패키지로 이미지를 읽고 쓸 때는 `io` 서브패키지의 `imsave`, `imread` 명령을 사용한다. 파일 확장자를 지정하면 해당 이미지 형식으로 자동 변환한다.
-
-```py
-skimage.io.imsave("astronaut.png", img_astro)
-img_astro2 = skimage.io.imread("astronaut.png")
-```
-
-### 색공간 변환
-`Scikit-Image`는 그레이스케일, RGB, HSV 등의 **색공간을 변환하는 기능**을 `color` 서브패키지에서 제공한다.
-
-```py
-from skimage import color
-
-plt.subplot(131)
-plt.imshow(img_astro)
-plt.axis("off")
-plt.title("RGB")
-
-plt.subplot(132)
-plt.imshow(color.rgb2gray(img_astro), cmap=plt.cm.gray)
-plt.axis("off")
-plt.title("그레이 스케일")
-
-plt.subplot(133)
-plt.imshow(color.rgb2hsv(img_astro))
-plt.axis("off")
-plt.title("HSV")
-
-plt.show()
-```
-
-![](/assets/images/Preprocessing6_9.png)
-
-## 3. OpenCV
-
-OpenCV(Open Source Computer Vision)은 이미지 처리, 컴퓨터 비전을 위한 라이브러리이다. Windows, Linux, OS X(Mac OS), iOS, Android 등 다양한 플랫폼을 지원한다. **실시간 이미지 프로세싱**에 중점을 둔 라이브러리이며 **많은 영상처리 알고리즘**을 구현해 놓았다. 
-
-> 앞으로 이미지 처리 포스팅을 하며 가장 많이 사용될 예정 
-
-다양한 이미지 특징(feature) 처리 기능을 제공하는데 이 기능은 무료소스가 아니기 떄문에, 아나콘다나 pip 명령으로 받은 패키지에는 이 기능이 제외되어 있다.
-
-### 파일 읽고 쓰기
-이미지를 읽을 때는 `imread` 메서드를 사용하는데 인수로 **파일이름**과 함께 **`flag`**를 넣을 수 있다.
-
-- `cv2.IMREAD_COLOR`: 이미지 파일을 **컬러**로 읽어들인다. 투명한 부분은 무시되며, flag디폴트 값이다.
-
-- `cv2.IMREAD_GRAYSCALE`: 이미지를 **그레이스케일** 읽어 들인다. 실제 이미지 처리시 중간단계로 많이 사용한다.
-
-- `cv2.IMREAD_UNCHANGED`: 이미지파일을 **알파 채널(투명도)**까지 포함하여 읽어 들인다.
-
-각각 1, 0, -1로 표현된다.
-
-```py
-img_astro3 = cv2.imread("./astronaut.png")
-img_astro3.shape
-# > (512, 512, 3)
-```
-
-OpenCV도 이미지 데이터를 Numpy 배열로 저장한다. 하지만 **색 체널의 순서가 B-G-R 순서**로 되어 있다.  RGB값으로 사용하고 싶으면 채널을 분리해서 합해줘야 한다.
-
-- `cvtColor`명령을 사용하면 더 간단하게 색공간을 변환할 수 있다. 
-
-- 이미지 파일을 만들 때는 `imwrite`명령 사용
-
-```py
-# 1. bgr -> rgb 
-b, g, r = cv2.split(img_astro3) # 각 채널을 분리
-img_astro3_rgb = cv2.merge([r, g, b]) # b, r을 서로 바꿔서 Merge
-
-# 2. cvtColor명령
-img_astro3_gray = cv2.cvtColor(img_astro3, cv2.COLOR_BGR2GRAY)
-
-# 3. 이미지 파일 저장
-cv2.imwrite("./gray_astronaut.png", img_astro3_gray)
-```
-
-### 이미지 크기 변환
-`resize()`명령으로 이미지의 크기를 변환할 수 있다.
-
-```py
-img_astro3_gray_resized = cv2.resize(img_astro3_gray, dsize=(50, 50))
-img_astro3_gray_resized.shape
-# > ((512, 512), (50, 50))
-
-plt.subplot(121)
-plt.imshow(img_astro3_gray, cmap=plt.cm.gray)
+blur = cv2.blur(img, (5, 5))
+
+## 이하 코드에서 그래프 출력 코드 생략
+plt.subplot(1, 2, 1)
+plt.imshow(img)
 plt.title("원본 이미지")
-plt.axis("off")
+plt.axis('off')
+plt.subplot(1, 2, 2)
+plt.imshow(blur)
+plt.title("blur 함수 적용")
+plt.axis('off')
 
-plt.subplot(122)
-plt.imshow(img_astro3_gray_resized, cmap=plt.cm.gray)
-plt.title("축소 이미지 (같은 크기로 표현)")
-plt.axis("off")
-
+plt.tight_layout()
 plt.show()
 ```
 
-![](/assets/images/Preprocessing6_10.png)
+![](/assets/images/Preprocessing7_4.png)
+
+### 2) 중앙값블러
+- 평균이 아닌 중앙값으로 해당 픽셀을 대체한다. **점 모양의 잡음을 제거**하는데 효과적이다.
+- `medianBlur(src, ksize)`
+    - `src`: 원본 이미지
+    - `ksize`: 커널 크기 (튜플 값으로)
+
+```py
+# 점 잡음 적용
+img_noise = img.copy()
+
+np.random.seed(0)
+N = 500
+idx1 = np.random.randint(img.shape[0], size=N)
+idx2 = np.random.randint(img.shape[1], size=N)
+img_noise[idx1, idx2] = 255
+
+# 중앙값 블러로 잡음 제거
+img_denoise = cv2.medianBlur(img_noise, 3)
+```
+
+![](/assets/images/Preprocessing7_5.png)
+
+
+### 3) 가우시안 블러
+- 가우시안 함수를 커널로 사용한다. 중앙 위치와 커널 위치의 **거리 차가 클수록 가중치가 작아진다**.
+- 커널을 전체로 봐서 블러를 실시함으로 이미지 전체가 뭉개지게 된다.
+- `GaussianBlur(src, ksize, sigmaX)`
+    - `src`: 원본 이미지
+    - `ksize`: 커널 크기 (튜플 값으로)
+    - `sigmaX`: 표준편차
+
+```py
+# 백색 잡음 적용
+img_noise = np.clip((img / 255 + np.random.normal(scale=0.1, size=img.shape)) * 255, 0, 255).astype('uint8')
+
+# 가우시안 블러로 잡음 제거
+img_denoise = cv2.GaussianBlur(img_noise, (9, 9), 2)
+```
+
+![](/assets/images/Preprocessing7_6.png)
+
+
+### 4) 양방향 필터링
+- 가우시안 필터링을 쓰면 이미지의 경계선도 흐려지게 된다. 따라서 명암값의 차이도 커널에 넣는다.
+- 경계선은 살리면서, 경계선이 아닌 내부 영역만 블러처리를 하는 것을 말한다.
+
+- `bilateralFilter(src, d, sigmaColor, sigmaSpace)`
+    - `src` : 원본 이미지
+    - `d` : 커널 크기
+    - `sigmaColor` : 색공간 표준편차. 값이 크면 색이 많이 달라도 픽셀들이 서로 영향을 미친다.
+    - `sigmaSpace` : 거리공간 표준편차. 값이 크면 멀리 떨어져있는 픽셀들이 서로 영향을 미친다.
+
+```py
+img_denoise1 = cv2.GaussianBlur(img_noise, (9, 9), 2)
+img_denoise2 = cv2.bilateralFilter(img_noise, 9, 75, 75)
+```
+
+![](/assets/images/Preprocessing7_7.png)
+
+> 가우시안 필터링을 적용한 이미지는 다 뭉개졌지만, 양방향 필터링을 적용한 이미지는 어느 정도 경계선이 살아있다는 것을 확인할 수 있다.
+
+## 5. 형태학적 변환
+형태학적 변환(Morphological Transformation)이란 **이미지 필터링을 사용**하여 영역을 변화시키는 방법이다. 변환에 적용할 커널은 `getStructuringElement` 함수로 생성한다. 모양과 크기를 변수로 입력받는다.
+
+- `getStructuringElement(shape, ksize)`
+    - `shape`: 커널 모양
+        - `cv2.MORPH_RECT`: 사각형 모양
+        - `cv2.MORPH_ELLIPSE`: 타원형 모양
+        - `cv2.TMORPH_CROSS`: 십자 모양
+    - `ksize`: 커널 크기
+
+> 커널을 사용하지만 이진화가 된다.
+
+### 침식기법
+- 각 픽셀에 커널을 적용하여 **커널 영역 내의 최솟값(어두운 부분)**으로 해당 픽셀을 **대체**한다. 이진화된 이미지에서는 **0인 영역(어두운 부분)이 증가**한다.
+- 어두운 영역이 하얀 영역을 침식해서(파고) 들어간다.
+- 모든 영역을 '스트라이드(stride)'하면서 이미지를 변환시킨다.
+- `erode(src, kernel)`
+    - `src`: 원본 이미지
+    - `kernel`: 커널
+
+```py
+# 데이터 로드
+from skimage.data import horse
+img = horse().astype('uint8')
+img = np.ones(img.shape) - img
+ksize = (20, 20)
+
+# 커널 생성
+kernel = {}
+kernel[0] = cv2.getStructuringElement(cv2.MORPH_RECT, ksize)
+kernel[1] = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, ksize)
+kernel[2] = cv2.getStructuringElement(cv2.MORPH_CROSS, ksize)
+
+title = ["사각형 커널", "타원 커널", "십자가 커널"]
+plt.subplot(2, 2, 1)
+plt.imshow(img, cmap="gray")
+plt.title("원본 이미지")
+plt.axis('off')
+
+for i in range(3):
+# 침식 기법 적용
+    erosion = cv2.erode(img, kernel[i])
+    plt.subplot(2, 2, i+2)
+    plt.imshow(erosion, cmap='bone')
+    plt.title(title[i])
+    plt.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+![](/assets/images/Preprocessing7_8.png)
+
+### 팽창기법
+- 침식과 반대로 커널 영역의 최댓값(밝은 부분)으로 해당 픽셀을 대체한다.
+- `dilate(src, kernel)`
+    - `src`: 원본 이미지
+    - `kernel`: 커널
+
+```py
+plt.subplot(2, 2, 1)
+plt.imshow(img, cmap="gray")
+plt.title("원본 이미지")
+plt.axis('off')
+for i in range(3):
+# 팽창기법 적용
+    erosion = cv2.dilate(img, kernel[i])
+    plt.subplot(2, 2, i+2)
+    plt.imshow(erosion, cmap='bone')
+    plt.title(title[i])
+    plt.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+![](/assets/images/Preprocessing7_9.png)
+
+### 그래디언트, 오프닝, 크로징
+**그레디언트**
+- 그레디언트는 팽창으로 확장시킨 영역에서 침식으로 축소시킨 영역을 빼서 **윤곽선을 파악**하는 것이다.
+
+**오프닝**
+- **침식을 적용한 뒤 팽창을 적용**하는 것으로 영역이 점점 둥글게 되므로 **점 잡음, 작은 물체, 돌기 등을 제거하는데 적합**하다.
+
+**클로징**
+- 클로징은 반대로 **팽창을 적용한 뒤 침식을 적용**하여 영역이 영역이 붙기 때문에 **전체적인 윤곽을 파악**하는데 적합하다.
+
+- `morphologyEx(src, op, kernel)`
+    - `src`: 원본 이미지
+    - `op`:
+        - `cv2.MORPH_GRADIENT`: cv2.dilate(image) - cv2.erode(image)  
+        - `cv2.MORPH_OPEN`: cv2.dilate(cv2.erode(image))
+        - `cv2.MORPH_CLOSE`: cv2.erode(cv2.dilate(image))
+        - `cv2.MORPH_TOPHAT`: image - opening(image)
+        - `cv2.MORPH_BLACKHAT`: image - closing(image)
+    - `kernel`: 커널
+
+```py
+# 20x20크기의 타원형 커널 사용
+opening = cv2.morphologyEx(img, cv2.MORPH_OPEN,
+                           cv2.getStructuringElement(
+                               cv2.MORPH_ELLIPSE, (20, 20))
+                           )
+closing = cv2.morphologyEx(img, cv2.MORPH_CLOSE,
+                           cv2.getStructuringElement(
+                               cv2.MORPH_ELLIPSE, (20, 20))
+                           )
+# 그레디언트의 경우 윤곽을 확인하기 위해 크기를 3x3으로 줌
+gradient = cv2.morphologyEx(img, cv2.MORPH_GRADIENT,
+                            cv2.getStructuringElement(
+                                cv2.MORPH_ELLIPSE, (3, 3))
+                            )
+images = [img, gradient, opening, closing]
+titles = ["원본 이미지", 'Gradient', 'Opening', 'Closing']
+for i in range(4):
+    plt.subplot(2, 2, i+1)
+    plt.imshow(images[i], cmap='gray')
+    plt.title(titles[i])
+    plt.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+![](/assets/images/Preprocessing7_10.png)
+
+## 6. 예제
+영수증 이미지를 필터링 처리해서 영수증 부분만 하얀색이 나오고, 다른 배경은 검은색으로 나오게 이진화하라.
+
+```py
+import cv2
+# 이미지 로드
+origin_img = cv2.imread("./receipt.png")
+
+# 이미지 변환
+img = cv2.cvtColor(origin_img, cv2.COLOR_BGR2GRAY)
+
+# 임계처리
+maxval = 255
+thresh = 200
+_, img = cv2.threshold(img, thresh, maxval, cv2.THRESH_BINARY)
+
+# 중앙값 처리
+img = cv2.medianBlur(img, 3)
+
+# 클로징
+img = cv2.morphologyEx(img, cv2.MORPH_CLOSE,
+                           cv2.getStructuringElement(
+                               cv2.MORPH_ELLIPSE, (40, 40))
+                           )
+### 시각화 코드###
+plt.figure(figsize=(20, 15))
+plt.subplot(121)
+plt.title("원본 이미지", fontsize= 25)
+plt.imshow(origin_img, cmap="gray")
+plt.axis('off')
+plt.subplot(122)
+plt.title("변형 이미지", fontsize= 25)
+plt.imshow(img, cmap="gray")
+plt.axis('off')
+plt.show()
+```
+
+![](/assets/images/Preprocessing7_11.png)
+
+
+### 해답
+- 크기를 변경하는 게 굉장히 중요하다.
+1. `threshhold`를 해서 흑색과 흰색으로 만들어야 한다.
+2. `Closing`을 하게 되면 단어같은 것들은 사라진다.
+3. 나머지 자잘한 것들은 `blur`를 통해서 없앨 수 있다.
