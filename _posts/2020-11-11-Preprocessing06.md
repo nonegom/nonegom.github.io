@@ -1,7 +1,7 @@
 ---
 title:  "[머신러닝] 데이터 전처리 (이미지)  - 1. 이미지 처리 기초
 "
-excerpt: "이미지를 구성하는 기본 요소 및 이미지 처리 라이브러리 - 픽셀, 색공간, 이미지 형식 등 "
+excerpt: "이미지를 구성하는 기본 요소 및 이미지 처리 라이브러리 - 픽셀, 색공간, 이미지 형식 / Pillow, OpenCV, Scikit-Image"
 
 categories:
   - ML_PreProcessing
