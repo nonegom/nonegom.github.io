@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 4.1. 의사결정나무"
 excerpt: "판별적 확률모형에 해당하는 의사결정나무"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 3.3. 나이브베이즈 분류모형 연�
 excerpt: "나이브베이즈 분류 모형을 사용한 데이터 분석 연습문제(load_iris, load_digits, fetch_cotype)"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

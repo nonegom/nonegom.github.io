@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 2.1. 로지스틱 회귀분석"
 excerpt: "Logistic 회귀분석에 대한 이론과 간단한 코드 정리"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

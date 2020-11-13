@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 4.3. 부스트방법"
 excerpt: "'모형결합' 중 부스팅 방법론(에이다 부스트, 그레디언트 부스트)"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

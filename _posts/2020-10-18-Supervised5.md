@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 3.4. 감성분석"
 excerpt: "나이브베이즈 분류 모형을 이용한 문서 감성분석"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

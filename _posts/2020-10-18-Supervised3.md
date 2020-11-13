@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 3.2. 나이브베이즈 분류모형"
 excerpt: "생성모형 중 나이브베이즈 분류 모형"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

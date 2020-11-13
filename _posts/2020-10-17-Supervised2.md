@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 3.1. 선형판별분석법과 이차판�
 excerpt: "생성모형 중 선형판별분석법과 이차판별분석법"
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월

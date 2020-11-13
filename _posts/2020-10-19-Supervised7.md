@@ -3,7 +3,7 @@ title:  "[머신러닝] 지도학습 - 4.2. 모형결합"
 excerpt: "Ensemble methos라고도 불리는 '모형결합' 중 취합 방법론 "
 
 categories:
-  - MachinLearning
+  - ML_Supervised
 tags:
   - SupervisedLearning
   - 10월
