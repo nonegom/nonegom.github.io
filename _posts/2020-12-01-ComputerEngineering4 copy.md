@@ -1,6 +1,6 @@
 ---
 title:  "컴퓨터 공학(입문) - 4. 연산자"
-excerpt: "사용자 정의 함수"
+excerpt: "연산자(사칙, 관계, 논리 연산자) 개념, 실습 예제"
 categories:
   - ComputerEngineering
 tags:
