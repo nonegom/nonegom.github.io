@@ -12,6 +12,8 @@ toc_label: 페이지 목차
 use_math: true
 ---
 
+> 게시물 내 이미지 자료의 저작권은 SmartLearn에 있습니다.
+
 # 배열과 함수 (1강)
 
 ## 배열(array)
