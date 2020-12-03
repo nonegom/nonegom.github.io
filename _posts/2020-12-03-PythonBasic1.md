@@ -1,6 +1,6 @@
 ---
 title:  "Python - 입문1"
-excerpt: "컴퓨팅 사고력과 문제해결 / 파이썬 개요 / 연산자"
+excerpt: "컴퓨팅 사고력과 문제해결 / 파이썬 개요 / 연산자 / 조건문"
 categories:
   - ComputerEngineering
 tags:
