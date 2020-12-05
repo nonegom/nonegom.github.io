@@ -1,6 +1,6 @@
 ---
-title:  "선형대수 - 행렬식 / 역행렬 / 랭크"
-excerpt: "행렬식 1, 2 / 역행렬 / 랭크"
+title:  "선형대수 - 행렬식 / 역행렬 "
+excerpt: "행렬식 1, 2 / 역행렬 "
 categories:
   - LinearAlgebra
 tags:
