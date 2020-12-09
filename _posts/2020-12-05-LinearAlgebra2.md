@@ -58,7 +58,7 @@ $$\begin{pmatrix} 2 & -1 & | & -1\\ 1 & 1 & | & 4 \end{pmatrix} \iff
 \begin{pmatrix}  1 & 1 & | & 4 \\ 0 & 1 & | & 3 \end{pmatrix}
 $$
 
-> 해당 행렬은 위의 연립방정식과 해가 동일하다. 이떄 위의 $Rank = 2$이다.
+> 해당 행렬은 위의 연립방정식과 해가 동일하다. 이때 위의 $Rank = 2$이다.
 
 - 행렬식에서는 행과 행을 바꾸면 `-`가 붙지만, 랭크에서는 `-`가 붙지 않고 제약없이 바꿀 수있다.
 - 행렬식에서 어떤 행에 실수배 하는게 안되지만, 랭크는 가능하다.
@@ -75,7 +75,7 @@ $$
 - 0이 나오는 행이 나올때까지 구하거나, 마지막 행까지 연산을 한다.
 - 이때 0이 아닌 줄의 개수가 곧 **랭크**가 된다.
 
--$n \times n$ 의 행렬의 경우 최대 랭크는 $n$이다. 
+- $n \times n$ 의 행렬의 경우 최대 랭크는 $n$이다. 
 
 > 가우스 소거법과 기약행 사다리꼴에 대한 정보는 해당 [행사다리꼴-나무위키](https://namu.wiki/w/%ED%96%89%EC%82%AC%EB%8B%A4%EB%A6%AC%EA%BC%B4)를 참조하자.
 
@@ -98,7 +98,7 @@ $$
 - 여기서 `|(bar)`를 기준으로 왼쪽만 있는 행렬을 **계수행렬(A)**라고 하고, 오른쪽까지 포함한 것을 **확대행렬($A\|B$)**이라고 한다.
 
 
-## 랭크의 활용공식
+## 랭크의 활용공식 (★)
 - 일차연립방정식의 계수행렬을 $A$, 확대행렬을 $A\|B$라고 하자.
 
 1. $rankA < rank(A\|B)$이면 근(해)이 존재하지 않는다.
@@ -107,10 +107,10 @@ $$
 3. $rankA = rank(A\|B) < n$ 이면 무수히 많은 근(해)을 갖는다. 
   - = ~이외의 해를 가진다.
 
-- 만약 연립방정식의 모든 값이 `= 0`으로 끝면 **선형연립방정식**이다. 이 경우, $rankA$와 $rankA\|B$의 $rank$는 같다.
+- 만약 연립방정식의 모든 값이 `= 0`으로 끝나면 **선형연립방정식**이다. 이 경우, $rankA$와 $rank(A\|B)$의 $rank$는 같다.
 - $A: n \times n$행렬(암기)
   - 1) $\|A\| \neq 0 = rankA \iff n$
-  - 2) $\|A\| = 0 rankA \iff n$
+  - 2) $\|A\| = 0 = rankA \iff n$
 
 
 # 벡터
@@ -120,16 +120,17 @@ $$
 $$\text{벡터} \Longleftarrow \text{방향} + \text{힘(크기)} \text{이 제시된 수학적인 연산}$$
 
 1. 표현
-벡터: $\vec{a}$ 
+
+벡터: $\vec{a}$  
+
 벡터의 크기: $\| \vec{a} \|$
 
 2. 벡터의 상등
 - 벡터는 크기와 방향만 동일하다면, 위치는 크게 상관이 없다. 즉, 이동이 가능하다.
 - 왜냐하면 벡터는 오로지 **크기와 방향**만 갖기 때문이다.
 
-
 3. 벡터의 실수배
-$$k\vec{a} \quad -k\vec{a}$$
+$$k\vec{a}\ or\  -k\vec{a}$$
 - 방향은 그대로 갖고 있지만 **힘의 크기**만 늘거나 줄어든다.
 - 음수이면 **방향**이 반대로 바뀐다.
 
@@ -137,7 +138,6 @@ $$k\vec{a} \quad -k\vec{a}$$
 4. 단위 벡터
   - 크기가 1인 벡터를 의미한다.
   - 벡터 a의 단위벡터는 벡터a의 크기 $\times$ 벡터 a이다.
-
 $$\vec{a} \text{의 단위벡터} = \frac{1}{|\vec{a}|} \vec{a}$$
 
 
@@ -146,10 +146,10 @@ $$\vec{a} + \vec{b}$$
 - 최단거리로 첫 점부터 끝점까지 간 거리로 볼 수 있다.
 
 6. 벡터의 뺄셈
-- 어디애서 어디로 가는 지에 따라 식이 달라진다.
-- $\vec{a} - \vec{b}$와 \vec{b} - \vec{a}의 방향이 달라진다.
+- 어디dp서 어디로 가는 지에 따라 식이 달라진다.
+- $\vec{a} - \vec{b}$와 $\vec{b} - \vec{a}$의 방향이 달라진다.
 
-> 자세한 부분은  [유튜브 수업](https://www.youtube.com/playlist?list=PLxMkK1K0XECOj2sZG-gCk-CjvZhJ_75I4)이 **벡터**강의를 참조 바람
+> 자세한 부분은  [유튜브 수업](https://www.youtube.com/playlist?list=PLxMkK1K0XECOj2sZG-gCk-CjvZhJ_75I4)의 **벡터**강의를 참조 바람
 
 
 ## 벡터의 좌표계
@@ -206,6 +206,7 @@ $$
 \begin{matrix}
 \vec{a} & = & (a_1, a_2, a_3)  \\
 & = & a_1i + a_2j + a_3k
+        & = & a_i(1, 0, 0) + a_2(0, 1, 0) + a_3(0, 0, 1)
 \end{matrix}
 $$
 
@@ -228,9 +229,13 @@ $$
 
 # 벡터의 내적
 ## 내적의 정의
-두 벡터 $\vec{a} = (a_1, a_2, a_3), \vec{b} = (b_1, b_2, b_3)$의 사잇각 $\theta (0 \leq \theta \pi)$일 때, 
-$$\vec{a} \circ \vec{b} = |\vec{a}| |\vec{b}| cos\theta = a_1 b_1+a_2 b_2+a_3 b_3$$
-$$cos\theta \frac{\vec{a} \circ \vec{b}}{|\vec{a}||\vec{b}|}$$
+두 벡터 $\vec{a} = (a_1, a_2, a_3),\ \vec{b} = (b_1, b_2, b_3)$의 사잇각 $\theta (0 \leq \theta \leq \pi)$일 때, 
+$$
+\begin{matrix}
+\vec{a} \circ \vec{b} &=& |\vec{a}| |\vec{b}| cos\theta = a_1 b_1+a_2 b_2+a_3 b_3 \\
+&=&cos\theta \frac{\vec{a} \circ \vec{b}}{|\vec{a}||\vec{b}|}
+\end{matrix}
+$$
 
 ## 내적의 성질
 1. $\vec{a} \circ \vec{b}  = \vec{b} \circ \vec{a}$
@@ -243,7 +248,7 @@ $$cos\theta \frac{\vec{a} \circ \vec{b}}{|\vec{a}||\vec{b}|}$$
 5. $\vec{a} \circ \vec{a} = \|\vec{a}^2\|$
 
 ## 정사영 벡터
-- $\vec{a}$를 $\vec{b}$에 투영(Proj)면 다음과 같다.
-$$Proj_{\vec{b}}\vec{a} = \frac{\vec{a} \circ \vec{b}}{\vec{b} \circ \vec{b}}\vec{b}$$
+- $\vec{a}$를 $\vec{b}$에 투영(Proj)하면 다음과 같다.
+$$Proj_{\vec{b}}\vec{a} = \frac{\vec{a} \circ \vec{b}}{\vec{b} \circ \vec{b}}\ \vec{b}$$
 
 - 누구의 방향으로 투영(Projection)되냐에 따라서 공식에서 값의 비중이 높아지는 지가 정해진다고 생각하면 된다.
